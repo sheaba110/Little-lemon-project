@@ -1,9 +1,12 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, renderer_classes
 from .models import MenuItem
 from .serializers import MenuItemSerializer
 from rest_framework import status
+from rest_framework.renderers import TemplateHTMLRenderer
+
+
 
 @api_view(['GET','POST'])
 def menu_items(request):
@@ -23,8 +26,12 @@ def single_item(request, id):
     serializer_item = MenuItemSerializer(item)
     return Response(serializer_item.data)
 
-
-
+@api_view() 
+@renderer_classes ([TemplateHTMLRenderer])
+def menu(request):
+     items = MenuItem.objects.select_related('category').all()
+     serialized_item = MenuItemSerializer(items, many=True)
+     return Response({'data':serialized_item.data}, template_name='menu-items.html')    
 
 
 # def single_item(request, pk):

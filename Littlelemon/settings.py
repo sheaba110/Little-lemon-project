@@ -1,13 +1,5 @@
-"""
-For more information on this file, see
-https://docs.djangoproject.com/en/5.2/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/5.2/ref/settings/
-"""
 
 from pathlib import Path
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -54,10 +46,11 @@ ROOT_URLCONF = 'Littlelemon.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -124,3 +117,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 INTERNAL_IPS = [
     '127.0.0.1'
 ]
+
