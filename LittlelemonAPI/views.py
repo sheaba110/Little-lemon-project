@@ -7,11 +7,11 @@ from rest_framework import status
 from rest_framework.renderers import TemplateHTMLRenderer
 
 
-
+# .select_related('category').
 @api_view(['GET','POST'])
 def menu_items(request):
     if request.method == 'GET':
-        items = MenuItem.objects.select_related('category').all()
+        items = MenuItem.objects.all()
         serialized_item = MenuItemSerializer(items, many=True)
         return Response(serialized_item.data)
     if request.method == 'POST':
@@ -26,12 +26,12 @@ def single_item(request, id):
     serializer_item = MenuItemSerializer(item)
     return Response(serializer_item.data)
 
-@api_view() 
-@renderer_classes ([TemplateHTMLRenderer])
-def menu(request):
-     items = MenuItem.objects.select_related('category').all()
-     serialized_item = MenuItemSerializer(items, many=True)
-     return Response({'data':serialized_item.data}, template_name='menu-items.html')    
+# @api_view() 
+# @renderer_classes ([TemplateHTMLRenderer])
+# def menu(request):
+#     #  items = MenuItem.objects.select_related('category').all()
+#     #  serialized_item = MenuItemSerializer(items, many=True)
+#      return Response({'data':serialized_item.data}, template_name='menu-items.html')    
 
 
 # def single_item(request, pk):
