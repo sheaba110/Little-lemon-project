@@ -10,11 +10,17 @@ from rest_framework.renderers import TemplateHTMLRenderer
 
 @api_view(['GET','POST'])
 def menu_items(request):
-    if request.method == 'GET':
+    if (request.method == 'GET'):
         items = MenuItem.objects.select_related('category').all()
+        category_name = request.query_params.get('category')
+        to_price = request.query_params.get('to_price')
+        if category_name:
+            items = items.filter(category__title=category_name)
+        if to_price:
+            items = items.filter(price=to_price)
         serialized_item = MenuItemSerializer(items, many=True)
         return Response(serialized_item.data)
-    if request.method == 'POST':
+    if (request.method == 'POST'):
         serialized_item = MenuItemSerializer(data=request.data)
         serialized_item.is_valid(raise_exception=True)
         serialized_item.save()

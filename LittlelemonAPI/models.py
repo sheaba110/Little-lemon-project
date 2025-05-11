@@ -13,8 +13,6 @@ class MenuItem(models.Model):
     inventory = models.IntegerField()
     category = models.ForeignKey(Category, on_delete=models.PROTECT, default=1)
 
-    def __str__(self):
-        return self.title
 
     
 
