@@ -3,10 +3,16 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, renderer_classes
 from .models import MenuItem
 from .serializers import MenuItemSerializer
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
 from django.core.paginator import Paginator, EmptyPage
 
+
+class MenuItemsViewSet(viewsets.ModelViewSet):
+    queryset = MenuItem.objects.all()
+    serializer_class = MenuItemSerializer
+    ordering_fields=['price','inventory']
+    search_fields=['title','category__title']
 
 @api_view(['GET','POST'])
 def menu_items(request):
