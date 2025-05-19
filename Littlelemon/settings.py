@@ -28,7 +28,8 @@ INSTALLED_APPS = [
     'LittlelemonAPI',
     'rest_framework',
     'debug_toolbar',
-    'django_filters', 
+    'django_filters',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +55,10 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 2
+    'PAGE_SIZE': 2,
+    'DEFAULT_AUTHENTICATION_CLASSES':[
+        'rest_framework.authentication.TokenAuthentication',
+    ]
 }
 
 ROOT_URLCONF = 'Littlelemon.urls'

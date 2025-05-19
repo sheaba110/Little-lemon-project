@@ -6,6 +6,9 @@ from .serializers import MenuItemSerializer
 from rest_framework import status, viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
 from django.core.paginator import Paginator, EmptyPage
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes 
+
 
 
 class MenuItemsViewSet(viewsets.ModelViewSet):
@@ -60,21 +63,7 @@ def menu(request):
     serialized_item = MenuItemSerializer(items, many=True)
     return Response({'data': serialized_item.data}, template_name='menu-items.html')    
 
-
-# def single_item(request, pk):
-#     try:
-#         item = MenuItem.objects.get(pk=pk)
-#     except MenuItem.DoesNotExist:
-#         return Response({"error": "MenuItem not found"}, status=404)
-
-#     if request.method == 'GET':
-#         serializer = MenuItemSerializer(item)
-#         return Response(serializer.data)
-
-#     # For PUT, you can add code to update the item here
-#     elif request.method == 'PUT':
-#         serializer = MenuItemSerializer(item, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors, status=400)
+@api_view()
+@permission_classes([IsAuthenticated])
+def secret(request):
+    return Response({"message":"Some secret message"})
