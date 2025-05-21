@@ -1,14 +1,13 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.decorators import api_view, renderer_classes, permission_classes, throttle_classes
 from .models import MenuItem
 from .serializers import MenuItemSerializer
 from rest_framework import status, viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
 from django.core.paginator import Paginator, EmptyPage
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import permission_classes 
-
+from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
 
 
 class MenuItemsViewSet(viewsets.ModelViewSet):
@@ -67,3 +66,22 @@ def menu(request):
 @permission_classes([IsAuthenticated])
 def secret(request):
     return Response({"message":"Some secret message"})
+
+@api_view()
+@permission_classes([IsAuthenticated])
+def manager_view(request):
+    if request.user.groups.filter(name='Manager').exists():
+        return Response({"message":"Only managers can see this"})
+    else:
+        return Response({"message":"You are not authorized"}, 403)
+    
+@api_view()
+@throttle_classes([AnonRateThrottle])
+def throttling_check(request):
+    return Response({"message":"Successful"})
+
+@api_view()
+@permission_classes([IsAuthenticated])
+@throttle_classes([UserRateThrottle])
+def throttle_check_auth(request):
+    return Response({"message":"This message shows up only when you are authenticated user"})
