@@ -7,7 +7,8 @@ from rest_framework import status, viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
 from django.core.paginator import Paginator, EmptyPage
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
+from rest_framework.throttling import AnonRateThrottle, UserRateThrottle #UserRateThrottle now not access becaus I made throttle.py file and import UserRateThrottle from DRF there then made a class that make the same function
+from .throttles import TenCallsPerMinute
 
 
 class MenuItemsViewSet(viewsets.ModelViewSet):
@@ -82,6 +83,6 @@ def throttling_check(request):
 
 @api_view()
 @permission_classes([IsAuthenticated])
-@throttle_classes([UserRateThrottle])
+@throttle_classes([TenCallsPerMinute])
 def throttle_check_auth(request):
     return Response({"message":"This message shows up only when you are authenticated user"})
