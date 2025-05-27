@@ -1,4 +1,5 @@
 
+from datetime import timedelta
 from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,12 +26,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'LittlelemonAPI',
     'debug_toolbar',
     'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
+    'LittlelemonAPI',
 ]
 
 MIDDLEWARE = [
@@ -144,13 +145,17 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ),
 
-    'DEFAULT_THROTTLE_RATES': {
-        'anon':'2/minute',
-        'user':'5/minute',
-        'ten':'10/minute',
-    }
+    # 'DEFAULT_THROTTLE_RATES': {
+    #     'anon':'2/minute',
+    #     'user':'5/minute',
+    #     'ten':'10/minute',
+    # }
 }
 
 DJOSER = {
     "USER_ID_FIELD":"username",
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
 }

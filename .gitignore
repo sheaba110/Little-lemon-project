@@ -1,0 +1,39 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Django migrations
+**/migrations/*.pyc
+**/migrations/__pycache__/
+
+# Virtual environments
+venv/
+env/
+
+# Local settings
+.env
+
+# SQLite database
+db.sqlite3
+
+# VS Code settings
+.vscode/
+
+# macOS / Windows system files
+.DS_Store
+Thumbs.db
+
+# pytest cache
+.pytest_cache/
+
+# coverage reports
+htmlcov/
+.coverage
+coverage.xml
+
+# mypy / pylint / pyright type checking
+.mypy_cache/
+.pyright/
+
+# build artifacts (if using Django staticfiles)
+staticfiles/

@@ -9,6 +9,8 @@ from django.core.paginator import Paginator, EmptyPage
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.throttling import AnonRateThrottle, UserRateThrottle #UserRateThrottle now not access becaus I made throttle.py file and import UserRateThrottle from DRF there then made a class that make the same function
 from .throttles import TenCallsPerMinute
+from rest_framework.permissions import IsAdminUser
+from django.contrib.auth.models import User, Group
 
 
 class MenuItemsViewSet(viewsets.ModelViewSet):
@@ -86,3 +88,15 @@ def throttling_check(request):
 @throttle_classes([TenCallsPerMinute])
 def throttle_check_auth(request):
     return Response({"message":"This message shows up only when you are authenticated user"})
+
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def managers(request):
+    username = request.data['username']
+    if username:
+        user = get_object_or_404(User, username=username)
+        managers = Group.objects.get(name="Manager")
+        managers.user_set.add(user)
+        return Response({"message":"ok"})
+    
+    return Response({"message":"error"}, status.HTTP_400_BAD_REQUEST)
